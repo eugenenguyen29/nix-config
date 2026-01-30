@@ -25,6 +25,7 @@ in
       delta
       just
       ncdu
+      jq
 
       obs-studio
 
@@ -34,6 +35,13 @@ in
       pkgs-unstable.hyprshot
       pkgs-unstable.claude-code
       pkgs-unstable.libreoffice-qt6-fresh
+
+      pkgs-unstable.syncthing
+
+      blender
+
+      uv
+      python314
     ];
     shell.enableZshIntegration = true;
     sessionVariables = {

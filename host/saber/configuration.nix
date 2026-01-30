@@ -10,9 +10,6 @@
   vars,
   ...
 }:
-let
-  substituters = [ "https://cache.soopy.moe" ];
-in
 {
   imports = [
     ./hardware-configuration.nix
@@ -169,6 +166,13 @@ in
         "flakes"
       ];
       auto-optimise-store = true;
+
+      substituters = [
+        "https://cache.soopy.moe"
+        "https://hyprland.cachix.org"
+        "https://nix-community.cachix.org"
+        "https://cache.nixos.org"
+      ];
 
       trusted-substituters = [
         "https://cache.soopy.moe"
