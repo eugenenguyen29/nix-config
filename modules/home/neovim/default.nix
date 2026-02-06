@@ -55,6 +55,7 @@
       pkgs-unstable.nixd
       lua-language-server
       pkgs-unstable.just-lsp
+      pkgs-unstable.marksman
 
       # default formatter & linter
       pkgs-unstable.hujsonfmt
