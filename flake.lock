@@ -806,14 +806,17 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1770108394,
-        "narHash": "sha256-jkQ1KmD0wNVwqkStHyOhcpu9k3Jyuh4Ee780dyn/tlo=",
-        "path": "/home/saber/projects/omarchy-nix",
-        "type": "path"
+        "lastModified": 1770503347,
+        "narHash": "sha256-tNjOc4trF/1BEUoRBCGf5DZ8iDxuClStLmVVZ8imp5Q=",
+        "owner": "eugenenguyen29",
+        "repo": "omarchy-nix",
+        "rev": "2ee87e7504ff189e2ee31f20f164e6112da1488c",
+        "type": "github"
       },
       "original": {
-        "path": "/home/saber/projects/omarchy-nix",
-        "type": "path"
+        "owner": "eugenenguyen29",
+        "repo": "omarchy-nix",
+        "type": "github"
       }
     },
     "pre-commit-hooks": {

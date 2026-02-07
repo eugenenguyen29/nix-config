@@ -47,7 +47,7 @@
     };
 
     omarchy-nix = {
-      url = "path:/home/saber/projects/omarchy-nix";
+      url = "github:eugenenguyen29/omarchy-nix";
     };
 
     agenix.url = "github:ryantm/agenix";
