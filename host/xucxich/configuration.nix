@@ -86,7 +86,7 @@
       "tailscale0"
       "wlo1"
       "inbr0"
-      "vlan100br"  # NixOS-managed bridge for VLAN 100
+      "vlan100br" # NixOS-managed bridge for VLAN 100
     ];
 
     allowedTCPPorts = [ 22 ];
@@ -150,10 +150,19 @@
     tailscale = {
       enable = true;
       package = pkgs-unstable.tailscale;
-      extraSetFlags = [ "--advertise-exit-node" "--advertise-routes=10.10.20.0/24"];
+      extraSetFlags = [
+        "--advertise-exit-node"
+        "--advertise-routes=10.10.20.0/24"
+      ];
       extraUpFlags = [ "--ssh" ];
       useRoutingFeatures = "both";
     };
+  };
+
+  services.tuned = {
+    enable = true;
+    ppdSupport = true; # Enable tuned-ppd for automatic AC/battery profile switching
+    settings.dynamic_tuning = true; # Monitor workload and adjust settings dynamically
   };
 
   system.stateVersion = "25.11"; # Did you read the comment?
