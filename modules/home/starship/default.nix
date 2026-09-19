@@ -1,24 +1,28 @@
 {
   config,
-  lib,
   pkgs-unstable,
+  vars,
+  lib,
   ...
 }:
-
-with lib;
 let
   cfg = config.terminal.starship;
 in
 {
   options.terminal.starship = {
-    enable = mkEnableOption "StarShip Prompt ";
+    enable = lib.mkEnableOption "StarShip Prompt ";
   };
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.starship = {
       enable = true;
       package = pkgs-unstable.starship;
       enableInteractive = true;
       enableZshIntegration = true;
+    };
+    home.file = {
+      ".config/starship" = {
+        source = config.lib.file.mkOutOfStoreSymlink "${vars.dotfile-path}/starship";
+      };
     };
   };
 }

@@ -7,12 +7,19 @@
   programs.neovim = {
     enable = true;
     package = pkgs.neovim-unwrapped;
+    sideloadInitLua = true;
+    withPython3 = false;
+    withRuby = false;
+    withNodeJs = false;
     plugins = with pkgs.vimPlugins; [
       # C Sharp stuff
       roslyn-nvim
       rzls-nvim
 
       luasnip
+
+      # Odin stuff
+      # ols
 
       telescope-fzf-native-nvim
       telescope-nvim
@@ -42,6 +49,7 @@
           sql
           toml
           yaml
+          odin
         ]
       ))
     ];
@@ -61,6 +69,8 @@
       pkgs-unstable.hujsonfmt
       pkgs-unstable.nixfmt
       stylua
+
+      llvm
     ];
   };
 }

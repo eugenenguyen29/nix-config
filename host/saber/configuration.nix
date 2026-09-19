@@ -3,8 +3,7 @@
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
 {
-  config,
-  lib,
+  inputs,
   pkgs,
   pkgs-unstable,
   vars,
@@ -19,6 +18,12 @@
     ../../modules/nixos/tailscale.nix
   ];
 
+  nixpkgs.overlays = [
+    inputs.hyprmod.overlays.default
+  ];
+
+  hardware.apple-t2.kernelChannel = "stable";
+
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
     systemd-boot.enable = true;
@@ -27,7 +32,7 @@
   };
 
   networking.hostName = "${vars.host}"; # Define your hostname.
-  networking.extraHosts = builtins.readFile "${vars.home-dir}/.config/extrahosts";
+  # networking.extraHosts = builtins.readFile "${vars.home-dir}/.config/extrahosts";
   # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager = {
     enable = true;
@@ -121,6 +126,9 @@
   };
 
   services.fwupd.enable = true;
+  services.gvfs.enable = true;
+  services.udisks2.enable = true;
+
   # programs.firefox.enable = true;
 
   # List packages installed in system profile.
