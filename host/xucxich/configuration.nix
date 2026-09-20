@@ -46,12 +46,12 @@
         macAddress = "a6:3f:8a:0e:bf:19";
       };
       vlan100br = {
-	ipv4.addresses = [
-	    {
-	      address = "10.10.20.5";
-	      prefixLength = 24;
-	    }
-	  ];
+        ipv4.addresses = [
+          {
+            address = "10.10.20.5";
+            prefixLength = 24;
+          }
+        ];
       };
     };
   };
@@ -128,6 +128,8 @@
     git
     tree
     just
+
+    pkgs-unstable.butane
 
     btop
   ];
