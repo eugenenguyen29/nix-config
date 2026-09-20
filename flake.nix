@@ -15,17 +15,18 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11"; # Nix Packages (Default)
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05"; # Nix Packages (Default)
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable"; # Unstable Nix Packages
-    nixos-hardware.url = "github:NixOS/nixos-hardware";
+    #nixos-hardware.url = "github:NixOS/nixos-hardware";
+    nixos-hardware.url = "github:soopyc/nixos-hardware/apple-t2-updates";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     darwin = {
-      url = "github:lnl7/nix-darwin/nix-darwin-25.11";
+      url = "github:lnl7/nix-darwin/nix-darwin-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
@@ -47,13 +48,24 @@
     };
 
     omarchy-nix = {
-      url = "github:eugenenguyen29/omarchy-nix";
+      # url = "github:eugenenguyen29/omarchy-nix";
+      url = "path:/home/saber/projects/omarchy-nix";
     };
 
     agenix.url = "github:ryantm/agenix";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    hyprmod = {
+      url = "github:BlueManCZ/hyprmod";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
+    quickshell = {
+      url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -88,12 +100,12 @@
       nixosConfigurations.saber = (
         import ./host/saber/default.nix {
           inherit (nixpkgs) lib;
+          inherit (nixpkgs.lib) file;
           inherit
             self
             inputs
             nixpkgs
             nixpkgs-unstable
-            nixos-hardware
             ;
         }
       );
@@ -101,6 +113,7 @@
       nixosConfigurations.xucxich = (
         import ./host/xucxich/default.nix {
           inherit (nixpkgs) lib;
+          inherit (nixpkgs.lib) file;
           inherit
             self
             inputs

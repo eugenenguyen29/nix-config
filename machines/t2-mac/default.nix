@@ -7,11 +7,9 @@
   boot.blacklistedKernelModules = [
     "cdc_ncm"
     "cdc_mbim"
-    "hci_bcm4377"
   ];
 
-  # Disable bluetooth for stability of the T2-Mac system
-  hardware.bluetooth.enable = lib.mkForce false;
+  hardware.bluetooth.enable = lib.mkForce true;
   services.blueman.enable = lib.mkForce false;
 
   systemd.services."suspend-fix-t2" = {

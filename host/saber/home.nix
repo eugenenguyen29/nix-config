@@ -1,9 +1,9 @@
 {
+  inputs,
   config,
   pkgs,
   pkgs-unstable,
   vars,
-  lib,
   ...
 }:
 let
@@ -11,37 +11,48 @@ let
 in
 {
   imports = [
-    (import ../../modules/home/neovim/default.nix)
-    (import ../../modules/home/git/default.nix)
-    ../../modules/home/waybar.nix
+    ../../modules/home/neovim/default.nix
+    ../../modules/home/git/default.nix
+    ../../modules/home/quickshell/default.nix
+    ../../modules/home/starship/default.nix
   ];
   home = {
     stateVersion = "25.05";
     username = "${toString vars.user}";
     homeDirectory = "${toString vars.home-dir}";
     packages = with pkgs; [
-      starship
       bat
       delta
       just
       ncdu
       jq
+      virt-viewer
 
-      obs-studio
-
+      pkgs-unstable.localsend
       pkgs-unstable.dbeaver-bin
-      pkgs-unstable.floorp-bin
+      pkgs-unstable.jetbrains.rider
 
-      pkgs-unstable.hyprshot
+      pkgs-unstable.floorp-bin
+      pkgs-unstable.libreoffice-qt-stable
+
+      thunderbird
+
       pkgs-unstable.claude-code
-      pkgs-unstable.libreoffice-qt6-fresh
 
       pkgs-unstable.syncthing
 
-      blender
+      pkgs-unstable.odin
 
       uv
       python314
+
+      tmux
+      usbimager
+
+      pkgs-unstable.hyprshot
+      hyprland-qt-support
+
+      inputs.hyprmod.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
     shell.enableZshIntegration = true;
     sessionVariables = {
@@ -50,20 +61,17 @@ in
     };
 
     file = {
-      ".ideavimrc".text = builtins.readFile "${vars.dotfile-path}/.ideavimrc";
+      ".ideavimrc".source = mkOutOfStoreSymlink "${vars.dotfile-path}/.ideavimrc";
       ".config/nvim" = {
         source = mkOutOfStoreSymlink "${vars.dotfile-path}/nvim";
-        recursive = true;
-      };
-      ".config/starship" = {
-        source = mkOutOfStoreSymlink "${vars.dotfile-path}/starship";
-        recursive = true;
       };
     };
-
   };
 
   git.enable = true;
+  terminal.starship.enable = true;
+  shell.quickshell.enable = true;
+
   programs.git = {
     signing = {
       key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH9ciOGgb5XOllKsWI6EkPiMrvENn+oXFTAxG9QGUjwB";
@@ -85,7 +93,19 @@ in
       IdentitiesOnly yes
       IdentityFile ~/.ssh/id_github_ed25519
   '';
+
   programs.bash = {
     enable = true;
+  };
+
+  programs.atuin = {
+    enable = true;
+    package = pkgs-unstable.atuin;
+    settings = {
+      auto_sync = false;
+      update_check = false;
+      search_mode = "prefix";
+    };
+    enableZshIntegration = true;
   };
 }

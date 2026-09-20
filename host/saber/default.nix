@@ -1,10 +1,9 @@
 {
-  self,
   inputs,
   nixpkgs,
   nixpkgs-unstable,
-  nixos-hardware,
   lib,
+  file,
   ...
 }:
 let
@@ -34,22 +33,21 @@ nixpkgs.lib.nixosSystem {
   specialArgs = {
     inherit
       inputs
-      self
       pkgs
       pkgs-unstable
-      nixos-hardware
-      lib
       vars
+      lib
+      file
       ;
   };
   modules = [
     ./configuration.nix
-
-    nixos-hardware.nixosModules.apple-t2
+    inputs.nixos-hardware.nixosModules.apple-t2
     inputs.omarchy-nix.nixosModules.default
     inputs.home-manager.nixosModules.home-manager
     {
       home-manager = {
+        backupFileExtension = "bak";
         users."${vars.user}" = {
           imports = [
             ./home.nix
@@ -58,13 +56,14 @@ nixpkgs.lib.nixosSystem {
         };
         extraSpecialArgs = {
           inherit
+            inputs
             pkgs
             pkgs-unstable
             vars
-            inputs
             ;
         };
       };
+
     }
   ];
 }

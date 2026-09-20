@@ -1,9 +1,10 @@
 {
   pkgs,
+  lib,
   ...
 }:
 {
-  powerManagement.powertop.enable = true; # enable powertop auto tuning on startup.
+  powerManagement.powertop.enable = lib.mkDefault true; # enable powertop auto tuning on startup.
 
   # Long-pressing your power button (5 seconds or longer)
   # to do a hard reset is handled by your machine’s BIOS/EFI and thus still possible.

@@ -22,7 +22,6 @@
       "CTRL SHIFT, space, exec, $passwordManager --quick-access --ozone-platform=wayland --enable-features=UseOzonePlatform"
 
       "SUPER, B, exec, $browser --ozone-platform=wayland --enable-features=UseOzonePlatform"
-      "SUPER, C, exec, $webapp=https://claude.com"
 
       "SUPER, D, exec, $terminal -e lazydocker"
 
