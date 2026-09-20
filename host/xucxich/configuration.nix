@@ -16,8 +16,8 @@
     ./incus.nix
     ../../modules/nixos/virtualisation
   ];
-
-  services.virtualisation.podman.enable = true;
+  
+  services.virtualisation.docker.enable = true;
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -46,13 +46,20 @@
         macAddress = "a6:3f:8a:0e:bf:19";
       };
       vlan100br = {
-        useDHCP = true;
+	ipv4.addresses = [
+	    {
+	      address = "10.10.20.5";
+	      prefixLength = 24;
+	    }
+	  ];
       };
     };
   };
   networking.networkmanager.enable = false; # Disabled - using scripted networking for bridge
 
   systemd.coredump.enable = false;
+
+  programs.ssh.startAgent= true;
   services.openssh = {
     enable = true;
     allowSFTP = false;
@@ -102,7 +109,7 @@
       extraGroups = [
         "networkmanager"
         "wheel"
-        "podman"
+        "docker"
       ];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILqP1HvcppNVOVZn/B3hd6He1ibPsTisvL16su7k9/7k moritzzmn@imbp"
@@ -121,8 +128,6 @@
     git
     tree
     just
-
-    pkgs-unstable.butane
 
     btop
   ];
@@ -145,7 +150,8 @@
     };
     optimise.automatic = true;
   };
-
+  
+  services.fwupd.enable = true;
   services = {
     tailscale = {
       enable = true;

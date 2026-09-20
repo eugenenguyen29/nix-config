@@ -1,1 +1,7 @@
-{ ... }: { imports = [ ./podman ]; }
+{ ... }:
+{
+  imports = [
+    ./docker
+    ./podman
+  ];
+}

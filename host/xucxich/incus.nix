@@ -7,7 +7,7 @@
   virtualisation.incus = {
     enable = true;
     ui.enable = true;
-
+    package = pkgs.incus;
     # Use btrfs storage backend (partition mounted at /var/lib/incus)
     preseed = {
       networks = [
