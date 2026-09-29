@@ -59,6 +59,12 @@
 
   systemd.coredump.enable = false;
 
+  # Cap journal size; default (10% of fs, max 4G) let old tailscale/dhcpcd spam pile up
+  services.journald.extraConfig = ''
+    SystemMaxUse=1G
+    MaxRetentionSec=3month
+  '';
+
   programs.ssh.startAgent= true;
   services.openssh = {
     enable = true;
