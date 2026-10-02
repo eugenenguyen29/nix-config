@@ -47,6 +47,7 @@ nixpkgs.lib.nixosSystem {
     inputs.home-manager.nixosModules.home-manager
     {
       home-manager = {
+        useUserPackages = true;
         backupFileExtension = "bak";
         users."${vars.user}" = {
           imports = [

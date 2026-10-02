@@ -9,6 +9,7 @@
     full_name = "Moritz Zimmerman";
     email_address = "dinhnhattai.nguyen@hotmail.com";
     theme = "everforest";
+    desktop_wallpaper = ./../../assets/wallpapers/1387138.png;
     hyprlock_wallpaper = ./../../assets/wallpapers/a_rainbow_colored_logo_with_an_apple.png;
     exclude_packages = with pkgs; [
       vscode
@@ -17,6 +18,10 @@
       dropbox
     ];
     scale = 1;
+    lid = {
+      enable = true;
+      exclusive_monitors = [ "BNQ BenQ GW2480" ];
+    };
     quick_app_bindings = [
       "SUPER, slash, exec, $passwordManager --ozone-platform=wayland --enable-features=UseOzonePlatform"
       "CTRL SHIFT, space, exec, $passwordManager --quick-access --ozone-platform=wayland --enable-features=UseOzonePlatform"

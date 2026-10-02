@@ -12,7 +12,9 @@
     HandlePowerKey = "ignore";
     HandleLidSwitch = "lock";
     HandleLidSwitchExternalPower = "lock";
-    HandleLidSwitchDocked = "lock";
+    # Docked = an external monitor is connected; omarchy.lid turns the panel off
+    # instead, so locking here would only put hyprlock on the monitors in use.
+    HandleLidSwitchDocked = "ignore";
   };
 
   services.tlp = {

@@ -27,9 +27,6 @@ in
 
       jq
       obs-studio
-      anydesk
-
-      pkgs-unstable.hyprshot
 
       pkgs-unstable.floorp-bin
 
@@ -48,11 +45,6 @@ in
       ".ideavimrc".text = builtins.readFile "${vars.dotfile-path}/.ideavimrc";
       ".config/nvim" = {
         source = mkOutOfStoreSymlink "${vars.dotfile-path}/nvim";
-        recursive = true;
-      };
-      ".config/starship" = {
-        source = mkOutOfStoreSymlink "${vars.dotfile-path}/starship";
-        recursive = true;
       };
     };
 

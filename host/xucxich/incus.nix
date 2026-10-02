@@ -4,6 +4,7 @@
   ...
 }:
 {
+
   virtualisation.incus = {
     enable = true;
     ui.enable = true;
@@ -71,5 +72,8 @@
   users.users.xucxich.extraGroups = [ "incus-admin" ];
 
   # Networking: allow Incus bridge traffic
-  networking.firewall.trustedInterfaces = [ "incusbr0" "vlan100br" ];
+  networking.firewall.trustedInterfaces = [
+    "incusbr0"
+    "vlan100br"
+  ];
 }

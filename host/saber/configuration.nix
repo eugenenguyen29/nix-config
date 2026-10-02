@@ -4,6 +4,7 @@
 
 {
   inputs,
+  lib,
   pkgs,
   pkgs-unstable,
   vars,
@@ -12,17 +13,20 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./omarchy.nix
     ../../machines/laptop/default.nix
     ../../machines/t2-mac/default.nix
-    ../../modules/nixos/omarchy.nix
     ../../modules/nixos/tailscale.nix
   ];
 
-  nixpkgs.overlays = [
-    inputs.hyprmod.overlays.default
-  ];
-
   hardware.apple-t2.kernelChannel = "stable";
+
+  # Docked lid close -> external monitors only (logind: machines/laptop).
+  omarchy.lid.enable = true;
+
+  # Cap disk usage of logs and crash dumps.
+  services.journald.extraConfig = "SystemMaxUse=200M";
+  systemd.coredump.settings.Coredump.MaxUse = "200M";
 
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
@@ -110,7 +114,6 @@
     extraGroups = [
       "networkmanager"
       "wheel"
-      "docker"
     ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
       tree
@@ -124,6 +127,16 @@
     autosuggestions.enable = true;
     syntaxHighlighting.enable = true;
   };
+
+  # docker group == passwordless root; run the daemon as the user instead.
+  virtualisation.docker.enable = lib.mkForce false;
+  virtualisation.docker.rootless = {
+    enable = true;
+    setSocketVariable = true;
+  };
+
+  # LLMNR is spoofable on untrusted networks; mDNS covers .local.
+  services.resolved.settings.Resolve.LLMNR = "false";
 
   services.fwupd.enable = true;
   services.gvfs.enable = true;

@@ -17,7 +17,6 @@ in {
     home.file = {
       ".config/wezterm" = {
         source = mkOutOfStoreSymlink "${vars.dotfile-path}/wezterm";
-        recursive = true;
       };
     };
   };

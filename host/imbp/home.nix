@@ -89,12 +89,6 @@ in
     ];
   };
 
-  programs.atuin = {
-    enable = true;
-    package = pkgs.atuin;
-    enableZshIntegration = true;
-  };
-
   terminal.wezterm.enable = true;
   shell.zsh.enable = true;
   terminal.starship.enable = true;
@@ -111,7 +105,6 @@ in
   xdg.configFile = {
     nvim = {
       source = mkOutOfStoreSymlink "${vars.dotfile-path}/nvim";
-      recursive = true;
     };
 
     # wezterm = {

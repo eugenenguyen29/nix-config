@@ -59,11 +59,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprmod = {
-      url = "github:BlueManCZ/hyprmod";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-
     quickshell = {
       url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
       inputs.nixpkgs.follows = "nixpkgs";

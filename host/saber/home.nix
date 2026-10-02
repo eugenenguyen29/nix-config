@@ -13,7 +13,6 @@ in
   imports = [
     ../../modules/home/neovim/default.nix
     ../../modules/home/git/default.nix
-    ../../modules/home/quickshell/default.nix
     ../../modules/home/starship/default.nix
   ];
   home = {
@@ -52,7 +51,16 @@ in
       pkgs-unstable.hyprshot
       hyprland-qt-support
 
-      inputs.hyprmod.packages.${pkgs.stdenv.hostPlatform.system}.default
+      sops
+      age
+
+      virt-viewer
+      incus
+
+      bitwarden-cli
+      bitwarden-desktop
+
+      pkgs-unstable.rtk
     ];
     shell.enableZshIntegration = true;
     sessionVariables = {
@@ -70,8 +78,6 @@ in
 
   git.enable = true;
   terminal.starship.enable = true;
-  shell.quickshell.enable = true;
-
   programs.git = {
     signing = {
       key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH9ciOGgb5XOllKsWI6EkPiMrvENn+oXFTAxG9QGUjwB";
