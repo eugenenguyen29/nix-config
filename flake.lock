@@ -831,8 +831,8 @@
         "walker": "walker"
       },
       "locked": {
-        "lastModified": 1790944781,
-        "narHash": "sha256-aU9QA+zAwnOKDS3IDojni7k5rtVg1Zv3gWo4Og5iH6M=",
+        "lastModified": 1791069096,
+        "narHash": "sha256-1jQbwv+OHFg1uwSBu28M9+UD8xhdI1wRDH+zhFTKhXQ=",
         "path": "/home/saber/projects/omarchy-nix",
         "type": "path"
       },

@@ -34,6 +34,20 @@
     efi.efiSysMountPoint = "/boot";
     efi.canTouchEfiVariables = true;
   };
+  # RTC resets to 1970 on this Mac. Loaded late, rtc_cmos overwrites the clock
+  # systemd/timesyncd already restored -> TLS fails, tailscale exit node is dead
+  # and blackholes all traffic (incl. NTP). Load it first so the restore wins.
+  boot.initrd.kernelModules = [ "rtc_cmos" ];
+  networking.timeServers = map (n: "${n}.oceania.pool.ntp.org") [ "0" "1" "2" "3" ];
+  # Hold tailscaled until NTP has synced. time-sync.target only waits when
+  # time-wait-sync is installed (NixOS ships it disabled and ignores [Install]).
+  # Timeout so offline boots still start tailscaled (After= is ordering only).
+  systemd.additionalUpstreamSystemUnits = [ "systemd-time-wait-sync.service" ];
+  systemd.services.systemd-time-wait-sync = {
+    wantedBy = [ "sysinit.target" ];
+    serviceConfig.TimeoutStartSec = "90s";
+  };
+  systemd.services.tailscaled.after = [ "time-sync.target" ];
 
   networking.hostName = "${vars.host}"; # Define your hostname.
   # networking.extraHosts = builtins.readFile "${vars.home-dir}/.config/extrahosts";

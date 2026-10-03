@@ -1,16 +1,36 @@
-# Touch Bar: stock layout. F1-F12 on the primary layer, the standard media keys
-# (brightness, mic mute, search, keyboard backlight, playback, volume) on the
-# second, reached with Fn.
-#
-# Both layer lists are deliberately omitted. tiny-dfr merges /etc/tiny-dfr/config.toml
-# over its own default per key, so leaving a key unset keeps the shipped list rather
-# than blanking it. Every global it accepts already defaults to what we want, so
-# enabling is the whole configuration.
+# Touch Bar. Primary layer: Ghostty, F2-F10, battery. The media layer (Fn) is the
+# stock one: its list is deliberately omitted, since tiny-dfr merges
+# /etc/tiny-dfr/config.toml over its own default per key, so an unset key keeps the
+# shipped list rather than blanking it.
 {
+  pkgs,
   ...
 }:
 {
-  hardware.apple.touchBar.enable = true;
+  hardware.apple.touchBar = {
+    enable = true;
+    settings.PrimaryLayerKeys = [
+      # Buttons can only emit keys; SUPER+T is omarchy's "$terminal" bind (ghostty).
+      { Icon = "ghostty"; Action = [ "LeftMeta" "T" ]; }
+      # SUPER+/ is the "$passwordManager" bind.
+      { Icon = "1password"; Action = [ "LeftMeta" "Slash" ]; }
+    ]
+    ++ map (n: { Text = "F${toString n}"; Action = "F${toString n}"; }) (pkgs.lib.range 3 10)
+    ++ [
+      { Battery = "both"; Action = "Battery"; Stretch = 2; }
+    ];
+  };
+
+  # Icons resolve from /etc/tiny-dfr first. PNGs are drawn unscaled, best at 48x48,
+  # which neither app ships, so downscale a larger one.
+  environment.etc = builtins.mapAttrs (name: src: {
+    source = pkgs.runCommand (baseNameOf name) { nativeBuildInputs = [ pkgs.imagemagick ]; } ''
+      magick ${src} -resize 48x48 $out
+    '';
+  }) {
+    "tiny-dfr/ghostty.png" = "${pkgs.ghostty}/share/icons/hicolor/128x128/apps/com.mitchellh.ghostty.png";
+    "tiny-dfr/1password.png" = "${pkgs._1password-gui}/share/icons/hicolor/64x64/apps/1password.png";
+  };
 
   # An app launcher on the second layer was tried and reverted: tiny-dfr supports
   # exactly two layers ([FunctionLayer; 2] in its source), so a launcher costs the
