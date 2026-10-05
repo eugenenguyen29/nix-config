@@ -61,9 +61,9 @@
     settings = {
       LogLevel = "INFO";
       AllowUsers = [ "xucxich" ];
-      PasswordAuthentication = true;
+      PasswordAuthentication = false;
       X11Forwarding = false;
-      KbdInteractiveAuthentication = true;
+      KbdInteractiveAuthentication = false;
       PermitRootLogin = "no";
     };
 
