@@ -15,6 +15,7 @@
     ./hardware-configuration.nix
     ./incus.nix
     ../../modules/nixos/virtualisation
+    ../../modules/nixos/tailscale.nix
   ];
 
   services.virtualisation.podman.enable = true;
@@ -148,8 +149,6 @@
 
   services = {
     tailscale = {
-      enable = true;
-      package = pkgs-unstable.tailscale;
       extraSetFlags = [
         "--advertise-exit-node"
         "--advertise-routes=10.10.20.0/24"
