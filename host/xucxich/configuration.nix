@@ -80,11 +80,10 @@
 
   security.pam.sshAgentAuth.enable = true;
   networking.firewall = {
-    enable = false;
+    enable = true;
 
     trustedInterfaces = [
       "tailscale0"
-      "wlo1"
       "inbr0"
       "vlan100br" # NixOS-managed bridge for VLAN 100
     ];
