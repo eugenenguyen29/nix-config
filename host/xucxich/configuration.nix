@@ -57,6 +57,7 @@
     enable = true;
     allowSFTP = false;
     ports = [ 22 ];
+    openFirewall = false; # break-glass only; see networking.firewall
 
     settings = {
       LogLevel = "INFO";
@@ -88,8 +89,8 @@
       "vlan100br" # NixOS-managed bridge for VLAN 100
     ];
 
-    allowedTCPPorts = [ 22 ];
-
+    # No global port 22: SSH access is gated by Tailscale ACLs (Tailscale SSH).
+    # openssh stays key-only as break-glass, reachable only via trusted interfaces (inbr0 LAN, vlan100br).
     allowedUDPPorts = [ config.services.tailscale.port ];
   };
 
