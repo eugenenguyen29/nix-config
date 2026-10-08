@@ -138,6 +138,9 @@
   programs.zsh = {
     enable = true;
     enableBashCompletion = true;
+    # compinit here runs before home-manager extends fpath, so the dump never
+    # matches and gets rebuilt every shell (~3s). home-manager/omarchy run it.
+    enableGlobalCompInit = false;
     autosuggestions.enable = true;
     syntaxHighlighting.enable = true;
   };

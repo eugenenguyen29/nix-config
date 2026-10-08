@@ -84,6 +84,9 @@ in
     };
   };
 
+  # omarchy-nix's zsh module already runs compinit; don't run it a second time.
+  programs.zsh.completionInit = "";
+
   programs.fzf = {
     enableZshIntegration = true;
   };
