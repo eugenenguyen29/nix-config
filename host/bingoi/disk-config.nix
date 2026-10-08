@@ -1,4 +1,5 @@
-# Minisforum MS-A2. Wiped by nixos-anywhere on install.
+# Minisforum MS-A2. A reinstall (nixos-anywhere / disko) wipes BOTH disks, including /data.
+# /data stays in disko on purpose; back it up before reinstalling.
 # by-id paths: nvme0n1/nvme1n1 can swap between boots.
 {
   disko.devices.disk = {
@@ -61,7 +62,7 @@
             extraArgs = [ "-f" ];
             subvolumes."@data" = {
               mountpoint = "/data";
-              mountOptions = [ "compress=zstd" "noatime" "nofail" ];
+              mountOptions = [ "compress=zstd" "noatime" "nofail" "nodev" "nosuid" ];
             };
           };
         };
