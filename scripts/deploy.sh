@@ -1,16 +1,19 @@
-#!/bin/zsh
+#!/usr/bin/env bash
+# Apply a NixOS config to a remote host, building on the host itself.
+# Usage: deploy.sh HOST [MODE=switch|test|boot] [USER=root]
+set -euo pipefail
 
-while getopts h:u:ts: flag; do case "${flag}" in
-    h) host=${OPTARG} ;;
-    u) user=${OPTARG} ;;
+host=$1
+mode=${2:-switch}
+user=${3:-root}
 
-esac done
+sudo=()
+[[ $user != root ]] && sudo=(--ask-sudo-password)
 
-NIX_SSHOPTS='-tt' nix run nixpkgs#nixos-rebuild -- \
-  --fast \
-  --build-host $user@$host \
-  --target-host $user@$host \
-  --use-remote-sudo \
-  --flake .#$host \
-  switch --fallback
-
+# nix run: works from hosts without nixos-rebuild on PATH (darwin).
+nix run nixpkgs#nixos-rebuild -- "$mode" \
+  --flake ".#$host" \
+  --target-host "$user@$host" \
+  --build-host "$user@$host" \
+  --fallback \
+  "${sudo[@]}"

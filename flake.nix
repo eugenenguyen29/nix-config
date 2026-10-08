@@ -52,10 +52,13 @@
       url = "path:/home/saber/projects/omarchy-nix";
     };
 
-    agenix.url = "github:ryantm/agenix";
-
     sops-nix = {
       url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    disko = {
+      url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -109,6 +112,18 @@
         import ./host/xucxich/default.nix {
           inherit (nixpkgs) lib;
           inherit (nixpkgs.lib) file;
+          inherit
+            self
+            inputs
+            nixpkgs
+            nixpkgs-unstable
+            ;
+        }
+      );
+
+      nixosConfigurations.bingoi = (
+        import ./host/bingoi/default.nix {
+          inherit (nixpkgs) lib;
           inherit
             self
             inputs

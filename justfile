@@ -17,8 +17,39 @@ rebuild-post:
 update:
     nix flake update
 
-deploy $host $user:
-    bash ./scripts/deploy.sh host={{ host }} user={{ user }}
+# Apply config to a remote host (mode: switch | test | boot)
+deploy host mode="switch" user="root":
+    bash ./scripts/deploy.sh {{ host }} {{ mode }} {{ user }}
+
+# Fresh network install via nixos-anywhere. WIPES the disks in host/<host>/disk-config.nix.
+# Target must be booted into the NixOS installer. Secrets: see op.env.
+install host ip:
+    HOST={{ host }} op run --env-file=op.env -- just _install {{ host }} {{ ip }}
+
+_install host ip:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    target="nixos@{{ ip }}"
+    # Installer password is typed at the prompts (twice). Agent off: 1Password's many
+    # keys would exhaust MaxAuthTries before the password prompt.
+    sshopts=(-o IdentityAgent=none -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null)
+
+    # No reboot phase: /mnt stays mounted so secrets can be placed before first boot.
+    # kexec phase kept: no-op on the installer, but without it nixos-anywhere
+    # assumes kexec already ran and logs in as root instead of nixos.
+    nix run github:nix-community/nixos-anywhere -- \
+      --ssh-option IdentityAgent=none \
+      --phases kexec,disko,install \
+      --flake .#{{ host }} \
+      --generate-hardware-config nixos-generate-config ./host/{{ host }}/hardware-configuration.nix \
+      --target-host "$target"
+
+    # One login: secrets go over stdin from memory, nothing written locally.
+    printf '%s\n' "$TS_AUTHKEY" | ssh "${sshopts[@]}" "$target" '
+      set -e
+      mountpoint -q /mnt || { echo "/mnt not mounted; installed system unreachable" >&2; exit 1; }
+      read -r authkey
+      printf "%s" "$authkey" | sudo install -D -m 600 /dev/stdin /mnt/var/lib/tailscale/authkey'
 
 rebuild-darwin:
     ./scripts/darwin-rebuild.sh
