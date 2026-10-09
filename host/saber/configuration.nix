@@ -155,6 +155,14 @@
   # LLMNR is spoofable on untrusted networks; mDNS covers .local.
   services.resolved.settings.Resolve.LLMNR = "false";
 
+  # Titan Ridge TB3 xHCI (8086:15ec) misses dock hotplug while runtime-suspended:
+  # the WD19DC USB3 side (and its RTL8153 NIC) never re-enumerates. Keep it awake.
+  # Match bind too: xhci-pci probe calls pm_runtime_allow() for this ID (quirk
+  # XHCI_DEFAULT_PM_RUNTIME_ALLOW), which would reset an add-time "on".
+  services.udev.extraRules = ''
+    ACTION=="add|bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x8086", ATTR{device}=="0x15ec", ATTR{power/control}="on"
+  '';
+
   services.fwupd.enable = true;
   services.gvfs.enable = true;
   services.udisks2.enable = true;
