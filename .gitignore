@@ -4,4 +4,4 @@ result-*
 .DS_Store
 .direnv/
 
-.claude/worktrees
+.claude/
