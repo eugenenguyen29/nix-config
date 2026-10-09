@@ -37,7 +37,7 @@
   systemd.services."suspend-fix-t2" = {
     enable = true;
     unitConfig = {
-      Description = "Unload and restore Wi-Fi (brcmfmac) around suspend";
+      Description = "Unload and restore Wi-Fi (brcmfmac) and Bluetooth (hci_bcm4377) around suspend";
       Before = "sleep.target";
       StopWhenUnneeded = "yes";
     };
@@ -52,10 +52,15 @@
       ExecStart = [
         "-/run/current-system/sw/bin/modprobe -r brcmfmac_wcc"
         "-/run/current-system/sw/bin/modprobe -r brcmfmac"
+        "-/run/current-system/sw/bin/modprobe -r hci_bcm4377"
       ];
+      # "-" keeps one failed load from skipping the rest. The 5s wait lets
+      # Wi-Fi firmware settle before Bluetooth binds (KAIT2EN order).
       ExecStop = [
-        "/run/current-system/sw/bin/modprobe brcmfmac"
-        "/run/current-system/sw/bin/modprobe brcmfmac_wcc"
+        "-/run/current-system/sw/bin/modprobe brcmfmac"
+        "-/run/current-system/sw/bin/modprobe brcmfmac_wcc"
+        "-/run/current-system/sw/bin/sleep 5"
+        "-/run/current-system/sw/bin/modprobe hci_bcm4377"
       ];
     };
     wantedBy = [ "sleep.target" ];
