@@ -22,6 +22,13 @@
       enable = true;
       exclusive_monitors = [ "BNQ BenQ GW2480" ];
     };
+    # Keyed by description, not DP-n: the dock renumbers ports. The lid scripts
+    # fall back to these when HyprMod's rule is missing or `disable`.
+    monitors = [
+      "desc:Microstep MSI MP273U PB4HB36200204, 3840x2160@60, 0x-60, 1.5, cm, srgb"
+      "desc:BNQ BenQ GW2480 K4L0156801Q, 1920x1080@60, -1080x10, 1, transform, 1, cm, srgb"
+      "desc:Apple Computer Inc Color LCD, 2560x1600@60, 0x1400, 1"
+    ];
     quick_app_bindings = [
       "SUPER, slash, exec, $passwordManager --ozone-platform=wayland --enable-features=UseOzonePlatform"
       "CTRL SHIFT, space, exec, $passwordManager --quick-access --ozone-platform=wayland --enable-features=UseOzonePlatform"
