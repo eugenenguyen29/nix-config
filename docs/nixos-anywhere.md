@@ -29,12 +29,5 @@ to `root@<host>` before it uploads its key (`nixos-anywhere.sh:985-986`).
    `-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null`, or they stop at
    an unknown-host-key prompt.
 
-**Resulting call** (see `_install` in the `justfile`):
-
-```bash
-nix run github:nix-community/nixos-anywhere -- \
-  --ssh-option IdentityAgent=none \
-  --phases kexec,disko,install \
-  --flake .#<host> \
-  --target-host nixos@<ip>
-```
+**Resulting call.** The `install` recipe in the `justfile` is the source of
+truth; it applies every fix above.

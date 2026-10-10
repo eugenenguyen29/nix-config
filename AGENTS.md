@@ -6,10 +6,19 @@ ALWAYS look up documentation first before figuring things out: official docs
 source in nixpkgs. Do not guess flags, options or syntax from memory; cite the
 doc you used.
 
-NEVER use plain text for secret use op cli to get the value
-for nixos host:
-{machine-name}-machine : stored username and password info
-{machine-name}-ssh-key : stored ssh information 
+Read [docs/infrastructure.md](docs/infrastructure.md) before changing any NixOS
+host. Update it in the same change when the infrastructure changes.
+Rules for writing that note:
+- The Nix config is the source of truth. Point to the file that declares
+  something; never restate its values (addresses, mounts, options, packages).
+- Write down only what the config cannot express: facts about the physical
+  network and hardware, manual steps, and gotchas with their recovery.
+- No secrets and no transient status (what is deployed today, what is pending).
 
-NEVER reach secret or private key from op cli
-You MUST only declare via naming convention only.
+Secrets:
+- NEVER write a secret in plain text.
+- NEVER read a secret or private key with the op CLI. Declare only its `op://`
+  reference, by naming convention (see `op.env`); `op run` resolves it in memory.
+- 1Password items per NixOS host:
+  - `{machine-name}-machine`: username and password
+  - `{machine-name}-ssh-key`: SSH key
