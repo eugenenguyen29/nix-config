@@ -35,7 +35,9 @@
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     # Fallback for when --ssh is turned off / sshd is re-enabled; unused while sshd is off.
-    openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPr9t6nVd1x6kxnOpZuxcLIC2x2ciP/gwlK8fZ7OEgNT" ];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPr9t6nVd1x6kxnOpZuxcLIC2x2ciP/gwlK8fZ7OEgNT"
+    ];
   };
   security.sudo.wheelNeedsPassword = false;
   security.sudo.execWheelOnly = true;
@@ -44,10 +46,24 @@
   services.fstrim.enable = true;
   services.power-profiles-daemon.enable = true;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
   # root stays trusted (default trusted-users), so root deploys still connect.
   nix.settings.allowed-users = [ "@wheel" ];
-  environment.systemPackages = with pkgs; [ git vim htop ];
+  nixpkgs.config.allowUnfree = true;
+  environment.systemPackages = with pkgs; [
+    git
+    vim
+    htop
+
+    neovim
+
+    tree
+
+    _1password-cli
+  ];
 
   system.stateVersion = "26.05";
 }

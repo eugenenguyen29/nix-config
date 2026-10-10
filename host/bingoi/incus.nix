@@ -1,8 +1,12 @@
 {
   virtualisation.incus = {
     enable = true;
+    ui.enable = true;
 
     preseed = {
+      # Remote API and web UI. All addresses; the firewall below limits it to the tailnet.
+      config."core.https_address" = ":8443";
+
       networks = [
         {
           name = "incusbr0";
@@ -68,6 +72,8 @@
   networking.nftables.enable = true;
   # DHCP/DNS from instances to the host.
   networking.firewall.trustedInterfaces = [ "incusbr0" ];
+  # Incus API and web UI, tailnet only.
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 8443 ];
 
   users.users.bingoi.extraGroups = [ "incus-admin" ];
 }
