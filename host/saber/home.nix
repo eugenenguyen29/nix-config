@@ -1,5 +1,4 @@
 {
-  inputs,
   config,
   pkgs,
   pkgs-unstable,
@@ -17,15 +16,15 @@ in
   ];
   home = {
     stateVersion = "25.05";
-    username = "${toString vars.user}";
-    homeDirectory = "${toString vars.home-dir}";
+    username = vars.user;
+    homeDirectory = vars.home-dir;
     packages = with pkgs; [
       bat
       delta
       just
       ncdu
       jq
-      virt-viewer
+      tree
 
       pkgs-unstable.localsend
       pkgs-unstable.dbeaver-bin
@@ -40,32 +39,22 @@ in
 
       pkgs-unstable.syncthing
 
-      pkgs-unstable.odin
-
       uv
       python314
-
-      tmux
-      usbimager
 
       pkgs-unstable.hyprshot
       hyprland-qt-support
 
-      sops
-      age
-
-      virt-viewer
       incus
+      virt-viewer
 
-      bitwarden-cli
       bitwarden-desktop
 
       pkgs-unstable.rtk
     ];
     shell.enableZshIntegration = true;
     sessionVariables = {
-      EDITOR = "${toString vars.editor}";
-      HOME_MANAGER = "${pkgs.lib.makeLibraryPath [ pkgs.home-manager ]}";
+      EDITOR = vars.editor;
     };
 
     file = {
@@ -84,21 +73,8 @@ in
     };
   };
 
-  programs.fzf = {
-    enableZshIntegration = true;
-  };
-
-  programs.ssh.extraConfig = ''
-    Host *
-      IdentityAgent ~/.1password/agent.sock
-      SetEnv TERM=xterm-256color
-
-    Host github
-      AddKeysToAgent yes
-      Hostname github.com
-      IdentitiesOnly yes
-      IdentityFile ~/.ssh/id_github_ed25519
-  '';
+  # omarchy-nix's zsh module already runs compinit; don't run it a second time.
+  programs.zsh.completionInit = "";
 
   programs.bash = {
     enable = true;

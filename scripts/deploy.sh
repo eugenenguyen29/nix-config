@@ -1,16 +1,22 @@
-#!/bin/zsh
+#!/usr/bin/env bash
+# Apply a NixOS config to a remote host, building on the host itself.
+# Usage: deploy.sh HOST [MODE=switch|test|boot] [USER=root]
+set -euo pipefail
 
-while getopts h:u:ts: flag; do case "${flag}" in
-    h) host=${OPTARG} ;;
-    u) user=${OPTARG} ;;
+host=${1:?usage: deploy.sh HOST [switch|test|boot] [USER]}
+mode=${2:-switch}
+user=${3:-root}
 
-esac done
+# Non-root: passwordless sudo (wheel) for activation.
+sudo=()
+[[ $user != root ]] && sudo=(--sudo)
 
-NIX_SSHOPTS='-tt' nix run nixpkgs#nixos-rebuild -- \
-  --fast \
-  --build-host $user@$host \
-  --target-host $user@$host \
-  --use-remote-sudo \
-  --flake .#$host \
-  switch --fallback
-
+# nix run: works from hosts without nixos-rebuild on PATH (darwin).
+# --no-reexec: use this pinned nixos-rebuild, not the target's.
+nix run nixpkgs#nixos-rebuild -- "$mode" \
+  --flake ".#$host" \
+  --target-host "$user@$host" \
+  --build-host "$user@$host" \
+  --fallback \
+  --no-reexec \
+  ${sudo[@]+"${sudo[@]}"}

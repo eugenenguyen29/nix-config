@@ -52,11 +52,19 @@
       url = "path:/home/saber/projects/omarchy-nix";
     };
 
-    agenix.url = "github:ryantm/agenix";
-
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixos-anywhere = {
+      url = "github:nix-community/nixos-anywhere";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.disko.follows = "disko";
     };
 
     quickshell = {
@@ -94,10 +102,7 @@
 
       nixosConfigurations.saber = (
         import ./host/saber/default.nix {
-          inherit (nixpkgs) lib;
-          inherit (nixpkgs.lib) file;
           inherit
-            self
             inputs
             nixpkgs
             nixpkgs-unstable
@@ -108,7 +113,18 @@
       nixosConfigurations.xucxich = (
         import ./host/xucxich/default.nix {
           inherit (nixpkgs) lib;
-          inherit (nixpkgs.lib) file;
+          inherit
+            self
+            inputs
+            nixpkgs
+            nixpkgs-unstable
+            ;
+        }
+      );
+
+      nixosConfigurations.bingoi = (
+        import ./host/bingoi/default.nix {
+          inherit (nixpkgs) lib;
           inherit
             self
             inputs
