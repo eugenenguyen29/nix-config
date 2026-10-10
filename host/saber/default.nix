@@ -2,8 +2,6 @@
   inputs,
   nixpkgs,
   nixpkgs-unstable,
-  lib,
-  file,
   ...
 }:
 let
@@ -16,7 +14,7 @@ let
     platform = "x86_64-linux";
   };
 
-  system = "${vars.platform}";
+  system = vars.platform;
 
   pkgs = import nixpkgs {
     inherit system;
@@ -36,8 +34,6 @@ nixpkgs.lib.nixosSystem {
       pkgs
       pkgs-unstable
       vars
-      lib
-      file
       ;
   };
   modules = [
@@ -49,7 +45,7 @@ nixpkgs.lib.nixosSystem {
       home-manager = {
         useUserPackages = true;
         backupFileExtension = "bak";
-        users."${vars.user}" = {
+        users.${vars.user} = {
           imports = [
             ./home.nix
             inputs.omarchy-nix.homeManagerModules.default

@@ -102,10 +102,7 @@
 
       nixosConfigurations.saber = (
         import ./host/saber/default.nix {
-          inherit (nixpkgs) lib;
-          inherit (nixpkgs.lib) file;
           inherit
-            self
             inputs
             nixpkgs
             nixpkgs-unstable
@@ -116,7 +113,6 @@
       nixosConfigurations.xucxich = (
         import ./host/xucxich/default.nix {
           inherit (nixpkgs) lib;
-          inherit (nixpkgs.lib) file;
           inherit
             self
             inputs
