@@ -21,6 +21,9 @@
     # via the tailnet policy "ssh" rules.
     extraSetFlags = [ "--ssh" ];
   };
+  # Deploys arrive over Tailscale SSH: restarting tailscaled mid-switch kills the
+  # session and aborts activation. A changed tailscaled applies on next reboot.
+  systemd.services.tailscaled.restartIfChanged = false;
   # One-time key: remove it once the node is Running so the spent key is not left on disk.
   systemd.services.tailscaled-autoconnect.serviceConfig.ExecStartPost =
     "${pkgs.coreutils}/bin/rm -f ${config.services.tailscale.authKeyFile}";
