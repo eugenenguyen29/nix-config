@@ -60,9 +60,16 @@
           content = {
             type = "btrfs";
             extraArgs = [ "-f" ];
-            subvolumes."@data" = {
-              mountpoint = "/data";
-              mountOptions = [ "compress=zstd" "noatime" "nofail" "nodev" "nosuid" ];
+            subvolumes = {
+              "@data" = {
+                mountpoint = "/data";
+                mountOptions = [ "compress=zstd" "noatime" "nofail" "nodev" "nosuid" ];
+              };
+              # Incus pool (incus.nix). No nodev/nosuid: container rootfs needs both.
+              "@incus" = {
+                mountpoint = "/data/incus";
+                mountOptions = [ "compress=zstd" "noatime" "nofail" ];
+              };
             };
           };
         };

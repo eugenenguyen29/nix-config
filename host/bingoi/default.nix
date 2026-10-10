@@ -12,5 +12,6 @@ nixpkgs.lib.nixosSystem {
     ./disk-config.nix
     ./hardware-configuration.nix
     ./configuration.nix
+    ./incus.nix
   ];
 }
