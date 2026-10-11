@@ -6,7 +6,13 @@
 {
   imports = [
     ./touchbar.nix
+    ./t2-dsp.nix
   ];
+
+  t2AppleAudioDSP = {
+    enable = true;
+    model = "15_4";
+  };
 
   boot.blacklistedKernelModules = [
     "cdc_ncm"
