@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   pkgs,
   pkgs-unstable,
   vars,
@@ -30,7 +31,6 @@ in
       pkgs-unstable.dbeaver-bin
       pkgs-unstable.jetbrains.rider
 
-      pkgs-unstable.floorp-bin
       pkgs-unstable.libreoffice-qt-stable
 
       thunderbird
@@ -78,6 +78,19 @@ in
 
   programs.bash = {
     enable = true;
+  };
+
+  programs.floorp = {
+    enable = true;
+    package = pkgs-unstable.floorp-bin;
+    profiles.default = {
+      # Existing profile folder in ~/.floorp, keeps current browsing data.
+      path = "2084qmzh.default";
+      isDefault = true;
+      preConfig = builtins.readFile "${inputs.arkenfox}/user.js";
+      # Overrides for arkenfox; written after preConfig, so these win.
+      settings = { };
+    };
   };
 
   programs.atuin = {

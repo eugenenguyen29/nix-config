@@ -72,6 +72,12 @@
     wantedBy = [ "sleep.target" ];
   };
 
+  # VA-API video decode on the Intel iGPU; without a driver browsers decode
+  # video on the CPU. iHD covers Broadwell and newer.
+  # https://wiki.nixos.org/wiki/Accelerated_Video_Playback
+  hardware.graphics.extraPackages = [ pkgs.intel-media-driver ];
+  environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
+
   hardware.firmware = [
     (pkgs.stdenvNoCC.mkDerivation (final: {
       name = "brcm-firmware";

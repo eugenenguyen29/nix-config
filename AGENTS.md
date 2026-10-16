@@ -6,8 +6,9 @@ ALWAYS look up documentation first before figuring things out: official docs
 source in nixpkgs. Do not guess flags, options or syntax from memory; cite the
 doc you used.
 
-Read [docs/infrastructure.md](docs/infrastructure.md) before changing any NixOS
-host. Update it in the same change when the infrastructure changes.
+Read [docs/infrastructure.md](docs/infrastructure.md) before inspecting or
+changing any host: it maps each host's entry files and how to query its
+evaluated config. Update it in the same change when the infrastructure changes.
 Rules for writing that note:
 - The Nix config is the source of truth. Point to the file that declares
   something; never restate its values (addresses, mounts, options, packages).
