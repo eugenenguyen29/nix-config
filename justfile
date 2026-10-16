@@ -66,8 +66,10 @@ rebuild-update $host:
     just update
     just rebuild  {{ host }}
 
+# Run as your user, not with sudo: the last step prunes ~/.local/state/nix/profiles.
 clean:
-    nix-env --delete-generations +3 -p /nix/var/nix/profiles/system
+    sudo nix-env --delete-generations +3 -p /nix/var/nix/profiles/system
+    rm -f result
     nix-collect-garbage --delete-older-than 7d
 
 brew-up:

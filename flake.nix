@@ -46,6 +46,10 @@
       url = "github:FelixKratz/homebrew-formulae";
       flake = false;
     };
+    arkenfox = {
+      url = "github:arkenfox/user.js";
+      flake = false;
+    };
 
     omarchy-nix = {
       # url = "github:eugenenguyen29/omarchy-nix";

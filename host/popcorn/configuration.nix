@@ -15,7 +15,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../modules/nixos/virtualisation
-    ../../modules/nixos/omarchy.nix
+    ./omarchy.nix
     ../../modules/nixos/fonts.nix
   ];
 

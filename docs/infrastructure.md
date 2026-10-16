@@ -1,22 +1,41 @@
 # Infrastructure
 
-Index of the NixOS machines, plus the facts the Nix config cannot express.
+Index of the machines, plus the facts the Nix config cannot express.
 The config is the source of truth: follow the pointers, do not restate them here.
 
 ## Hosts
 
-| Host | Start here | For |
-|------|------------|-----|
-| `saber` | `host/saber/configuration.nix` | Workstation; deploys start here. |
-| `bingoi` | `host/bingoi/configuration.nix` | Access, firewall, Tailscale SSH. |
-| | `host/bingoi/disk-config.nix` | Disks, subvolumes, mounts. |
-| | `host/bingoi/incus.nix` | Incus pool, bridge, profiles. |
-| `xucxich` | `host/xucxich/configuration.nix` | VLAN and bridge interfaces, podman. |
-| | `host/xucxich/incus.nix` | Incus pool, bridge, profiles. |
-| `popcorn` | `host/popcorn/configuration.nix` | |
+Every host is an output of `flake.nix`. Its `default.nix` holds the module list,
+the root of its import graph; follow the `imports` from there. Shared modules
+live in `machines/` (hardware profiles) and `modules/` (nixos, home, darwin).
+In the table, a bare file name sits next to the host's entry file.
 
-Deploy and install: `deploy` and `install` recipes in the `justfile`,
-`scripts/deploy.sh`, `docs/nixos-anywhere.md`.
+| Host | Kind | Hardware | Entry | Also read |
+|------|------|----------|-------|-----------|
+| `saber` | NixOS workstation, deploys start here | T2 MacBook | `host/saber/default.nix` | `omarchy.nix`, `machines/t2-mac/`, `machines/laptop/` |
+| `bingoi` | NixOS server, Tailscale SSH only | Minisforum MS-A2 | `host/bingoi/default.nix` | `disk-config.nix` (disks, mounts), `incus.nix` |
+| `xucxich` | NixOS server, VLAN bridges, podman | | `host/xucxich/default.nix` | `incus.nix` |
+| `popcorn` | NixOS desktop (omarchy) | PC | `host/popcorn/default.nix` | `omarchy.nix` |
+| `imbp` | nix-darwin | Intel Mac | `host/imbp/default.nix` | `packages.nix`, `darwin/`, `modules/darwin/` |
+
+Deploy and install: recipes in the `justfile`, `scripts/`,
+`docs/nixos-anywhere.md`.
+
+## Reading a host's state
+
+Files show what one module sets; the evaluated config shows the merged result,
+defaults and every other module included. Ask the evaluator before trusting a
+reading of the files. Evaluating builds nothing and changes no host.
+
+```bash
+nix flake show                                             # every host output
+nix eval .#nixosConfigurations.<host>.config.<option>      # one merged option
+nix eval --json .#nixosConfigurations.<host>.config.environment.systemPackages \
+  --apply 'map (p: p.name)'                                # system packages
+nix eval .#darwinConfigurations.imbp.config.<option>       # darwin host
+```
+
+A host that fails to evaluate is broken in the repo; report it before changing it.
 
 ## Outside the config
 
