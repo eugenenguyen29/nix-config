@@ -1,25 +1,13 @@
-Never push without my explicit permission.
-Never rebuild nix without explicit permission.
+Push or rebuild nix only after I explicitly say so.
 
-ALWAYS look up documentation first before figuring things out: official docs
-(context7, the tool's website), `<tool> --help` / man pages, or the option's
-source in nixpkgs. Do not guess flags, options or syntax from memory; cite the
-doc you used.
+Look up documentation before acting: official docs (context7, the tool's
+website), `<tool> --help` / man pages, or the option's source in nixpkgs.
+Cite the doc you used.
 
 Read [docs/infrastructure.md](docs/infrastructure.md) before inspecting or
-changing any host: it maps each host's entry files and how to query its
-evaluated config. Update it in the same change when the infrastructure changes.
-Rules for writing that note:
-- The Nix config is the source of truth. Point to the file that declares
-  something; never restate its values (addresses, mounts, options, packages).
-- Write down only what the config cannot express: facts about the physical
-  network and hardware, manual steps, and gotchas with their recovery.
-- No secrets and no transient status (what is deployed today, what is pending).
+changing any host. Update it in the same change when the infrastructure
+changes, following the writing rules in its header.
 
-Secrets:
-- NEVER write a secret in plain text.
-- NEVER read a secret or private key with the op CLI. Declare only its `op://`
-  reference, by naming convention (see `op.env`); `op run` resolves it in memory.
-- 1Password items per NixOS host:
-  - `{machine-name}-machine`: username and password
-  - `{machine-name}-ssh-key`: SSH key
+Secrets live in 1Password. Declare only an `op://` reference in `op.env`
+(naming convention in its header); `op run` resolves it in memory. Never write
+a secret in plain text, and never read a secret or private key with the op CLI.

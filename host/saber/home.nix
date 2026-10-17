@@ -35,11 +35,8 @@ in
 
       thunderbird
 
-      pkgs-unstable.claude-code
-
       pkgs-unstable.syncthing
 
-      uv
       python314
 
       pkgs-unstable.hyprshot
@@ -51,6 +48,12 @@ in
       bitwarden-desktop
 
       pkgs-unstable.rtk
+      pkgs-unstable.cliproxyapi
+      pkgs-unstable.claude-code
+
+      pkgs-unstable.uv
+      pkgs-unstable.ty
+      pkgs-unstable.ruff
     ];
     shell.enableZshIntegration = true;
     sessionVariables = {

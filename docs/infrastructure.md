@@ -1,7 +1,13 @@
 # Infrastructure
 
 Index of the machines, plus the facts the Nix config cannot express.
-The config is the source of truth: follow the pointers, do not restate them here.
+
+Rules for writing this note:
+- The Nix config is the source of truth. Point to the file that declares
+  something; never restate its values (addresses, mounts, options, packages).
+- Write down only what the config cannot express: facts about the physical
+  network and hardware, manual steps, and gotchas with their recovery.
+- No secrets and no transient status (what is deployed today, what is pending).
 
 ## Hosts
 
