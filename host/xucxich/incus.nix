@@ -71,9 +71,12 @@
   # Add user to incus-admin group
   users.users.xucxich.extraGroups = [ "incus-admin" ];
 
-  # Networking: allow Incus bridge traffic
-  networking.firewall.trustedInterfaces = [
-    "incusbr0"
-    "vlan100br"
-  ];
+  # Networking: allow only DHCP/DNS (dnsmasq) from Incus guests to the host
+  networking.firewall.interfaces.incusbr0 = {
+    allowedUDPPorts = [
+      53
+      67
+    ];
+    allowedTCPPorts = [ 53 ];
+  };
 }
